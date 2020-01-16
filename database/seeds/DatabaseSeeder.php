@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
-use App\Verlof;
+use App\Absence;
 
 class DatabaseSeeder extends Seeder
 {
@@ -13,7 +13,7 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         // $this->call(UsersTableSeeder::class);
-        DB::table("Verlofs")->insert([
+        DB::table("absences")->insert([
             'startdatum' => '16-01-2020',
             'einddatum' => '17-01-2020',
             'isgoedgekeurd' => False,

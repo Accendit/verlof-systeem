@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Verlof;
+use App\Absence;
 use Illuminate\Http\Request;
 
-class VerlofController extends Controller
+class AbsenceController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,7 +15,7 @@ class VerlofController extends Controller
     public function index()
     {
         //
-        return view('verlof', ['verlofs' => Verlof::All()]);
+        return view('absence', ['absences' => Absence::All()]);
     }
 
     /**
@@ -26,12 +26,12 @@ class VerlofController extends Controller
     public function create($startdatum, $einddatum, $aanvragerid)
     {
         //
-        $verlof = new Verlof;
-        $verlof->startdatum = startdatum;
-        $verlof->einddatum = einddatum;
-        $verlof->isgoedgekeurd = false;
-        $verlof->aanvrager = $aanvragerid;
-        $verlof->save();
+        $absence = new Absence;
+        $absence->startdatum = startdatum;
+        $absence->einddatum = einddatum;
+        $absence->isgoedgekeurd = false;
+        $absence->aanvrager = $aanvragerid;
+        $absence->save();
 
     }
 
@@ -49,10 +49,10 @@ class VerlofController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Verlof  $verlof
+     * @param  \App\Absence  $absence
      * @return \Illuminate\Http\Response
      */
-    public function show(Verlof $verlof)
+    public function show(Absence $absence)
     {
         //
     }
@@ -60,10 +60,10 @@ class VerlofController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Verlof  $verlof
+     * @param  \App\Absence  $absence
      * @return \Illuminate\Http\Response
      */
-    public function edit(Verlof $verlof)
+    public function edit(Absence $absence)
     {
         //
     }
@@ -72,10 +72,10 @@ class VerlofController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Verlof  $verlof
+     * @param  \App\Absence  $absence
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Verlof $verlof)
+    public function update(Request $request, Absence $absence)
     {
         //
     }
@@ -83,17 +83,17 @@ class VerlofController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Verlof  $verlof
+     * @param  \App\Absence  $absence
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Verlof $verlof)
+    public function destroy(Absence $absence)
     {
         //
     }
 
-    public function approve(Verlof $verlof)
+    public function approve(Absence $absence)
     {
-        $verlof->isgoedgekeurd = true;
-        $verlof->save();
+        $absence->isgoedgekeurd = true;
+        $absence->save();
     }
 }
