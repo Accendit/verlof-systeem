@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Absence;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AbsenceController extends Controller
 {
@@ -15,7 +16,16 @@ class AbsenceController extends Controller
     public function index()
     {
         //
-        return view('absence', ['absences' => Absence::All()]);
+        if (Auth::User()->isManager())
+        {
+            $absences = Absence::All();
+        } 
+        else
+        {
+            $absences = Absence::Where('submitter', Auth::User()->id);
+        }
+
+        return view('absence', ['absences' => $absences]);
     }
 
     /**
