@@ -19,4 +19,4 @@ Auth::routes(['register' => false]);
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::Get('/absences', 'AbsenceController@index')->middleware('auth');
+Route::get('/absences', 'AbsenceController@index')->middleware('auth');
