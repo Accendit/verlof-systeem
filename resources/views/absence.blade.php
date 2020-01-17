@@ -6,8 +6,11 @@
     {{ $absence->id }}
     {{ $absence->startdate }}
     {{ $absence->enddate }}
-    {{-- {{ if ($absence->isapproved) echo "Ja" }} --}}
-    {{ $absence->submitter->name }}
+    {{ $absence->isapproved? "Ja" : "Nee" }}
+    {{ $absence->submitter()->name }}
+    @if (Auth::User()->isManager())
+        {{ "Hier komt mooie goedkeur knop" }}
+    @endif
 @endforeach
 
 @endsection

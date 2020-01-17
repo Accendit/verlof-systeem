@@ -14,7 +14,7 @@
                         </div>
                     @endif
 
-                    You are logged in!
+                    You are logged in! {{ Auth::user()->isManager()? "mooi" : "Niet mooi" }}
                 </div>
             </div>
         </div>
