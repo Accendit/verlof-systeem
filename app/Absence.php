@@ -14,6 +14,6 @@ class Absence extends Model
 
     public function submitter()
     {
-        return $this->hasOne('App\User', 'id', 'submitter');
+        return $this->hasOne('App\User', 'id', 'submitter')->first();
     }
 }
