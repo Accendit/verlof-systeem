@@ -11,4 +11,9 @@ class Absence extends Model
     {
         $this->isgoedgekeurd = true;
     }
+
+    public function submitter()
+    {
+        return $this->hasOne('App\User', 'id', 'submitter');
+    }
 }
