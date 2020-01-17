@@ -12,11 +12,11 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('absences');
 });
 
 Auth::routes(['register' => false]);
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/absences', 'AbsenceController@index')->middleware('auth');
+Route::get('/absences', 'AbsenceController@index')->name('absences');
