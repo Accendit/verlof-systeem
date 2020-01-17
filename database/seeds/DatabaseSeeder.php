@@ -14,10 +14,10 @@ class DatabaseSeeder extends Seeder
     {
         // $this->call(UsersTableSeeder::class);
         DB::table("absences")->insert([
-            'startdatum' => '16-01-2020',
-            'einddatum' => '17-01-2020',
-            'isgoedgekeurd' => False,
-            'aanvrager' => 1,
+            'startdate' => '16-01-2020',
+            'enddate' => '17-01-2020',
+            'isapproved' => False,
+            'submitter' => 1,
         ]);
     }
 }

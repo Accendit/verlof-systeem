@@ -15,10 +15,10 @@ class CreateAbsencesTable extends Migration
     {
         Schema::create('absences', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->date('startdatum');
-            $table->date('einddatum');
-            $table->boolean('isgoedgekeurd')->default(false);
-            $table->bigInteger('aanvrager');
+            $table->date('startdate');
+            $table->date('enddate');
+            $table->boolean('isapproved')->default(false);
+            $table->bigInteger('submitter');
             $table->timestamps();
         });
     }
