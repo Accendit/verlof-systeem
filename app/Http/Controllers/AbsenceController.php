@@ -8,6 +8,10 @@ use Illuminate\Support\Facades\Auth;
 
 class AbsenceController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -54,6 +58,8 @@ class AbsenceController extends Controller
     public function store(Request $request)
     {
         //
+        return("Enne");
+        // log::debug("store");
     }
 
     /**
