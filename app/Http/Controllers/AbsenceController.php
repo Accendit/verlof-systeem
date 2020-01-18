@@ -18,14 +18,14 @@ class AbsenceController extends Controller
         //
         if (Auth::User()->isManager())
         {
-            $absences = Absence::All();
+            $absences = Absence::paginate(15);
         } 
         else
         {
-            $absences = Absence::Where('submitter', Auth::User()->id);
+            $absences = Absence::Where('submitter', Auth::User()->id)->paginate(15);
         }
 
-        return view('absence', ['absences' => $absences]);
+        return view('absence.index', ['absences' => $absences]);
     }
 
     /**
