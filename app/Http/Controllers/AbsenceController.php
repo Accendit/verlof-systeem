@@ -37,15 +37,10 @@ class AbsenceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create($startdatum, $einddatum, $aanvragerid)
+    public function create()
     {
         //
-        $absence = new Absence;
-        $absence->startdatum = startdatum;
-        $absence->einddatum = einddatum;
-        $absence->isgoedgekeurd = false;
-        $absence->aanvrager = $aanvragerid;
-        $absence->save();
+        return view('absence.create');
 
     }
 
