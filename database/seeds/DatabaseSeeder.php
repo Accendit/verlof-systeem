@@ -12,6 +12,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+
         Artisan::call('adldap:import', [
             '--no-interaction' => true,
             '--restore' => true,
@@ -19,12 +20,13 @@ class DatabaseSeeder extends Seeder
             '--filter' => '(objectclass=user)'
         ]);
 
-        DB::table("absences")->insert([
-            'startdate' => '16-01-2020',
-            'enddate' => '17-01-2020',
-            'isapproved' => Null,
-            'submitter' => 1,
-        ]);
+//        DB::table("absences")->insert([
+//            'startdate' => '16-01-2020',
+//            'enddate' => '17-01-2020',
+//            'isapproved' => Null,
+//            'submitter' => 1,
+//        ]);
 
+        factory(Absence::class, 10)->create();
     }
 }

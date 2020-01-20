@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Absence;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 
 class AbsenceController extends Controller
 {
@@ -20,6 +21,7 @@ class AbsenceController extends Controller
     public function index()
     {
         //
+
         $user = Auth::user();
         $absences = [];
 
@@ -124,13 +126,13 @@ class AbsenceController extends Controller
 
     /**
      * Approve an Absence request
-     * 
+     *
      * @param \App\Absence  $absence
      * @return \Illuminate\Http\RedirectResponse
      */
     public function approve(Absence $absence)
     {
-        if (!Auth::user()->isManager()) 
+        if (!Auth::user()->isManager())
         {
             return back()->with([
                 'danger_alert' => 'Je bent niet ingelogd als manager!.'
