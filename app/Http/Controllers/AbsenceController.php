@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Absence;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 
 class AbsenceController extends Controller
 {
@@ -23,7 +24,7 @@ class AbsenceController extends Controller
         if (Auth::User()->isManager())
         {
             $absences = Absence::paginate(15);
-        } 
+        }
         else
         {
             $absences = Absence::Where('submitter', Auth::User()->id)->paginate(15);
@@ -114,7 +115,7 @@ class AbsenceController extends Controller
 
     public function approve(Absence $absence)
     {
-        if (!Auth::user()->isManager()) 
+        if (!Auth::user()->isManager())
         {
             return $this->index()->with([
                 'success_alert' => 'nee nee.'
@@ -126,7 +127,7 @@ class AbsenceController extends Controller
         // return $this->index()->with([
         //     'success_alert' => 'Verzoek ' . $absence->id . ' goedgekeurd.'
         // ]);
-        return back()->with(
+        return Redirect::back()->with(
             'success_alert', 'Verzoek ' . $absence->id . ' goedgekeurd.'
         );
     }

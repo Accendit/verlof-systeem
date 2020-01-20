@@ -12,12 +12,15 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+
         // $this->call(UsersTableSeeder::class);
-        DB::table("absences")->insert([
-            'startdate' => '16-01-2020',
-            'enddate' => '17-01-2020',
-            'isapproved' => False,
-            'submitter' => 1,
-        ]);
+//        DB::table("absences")->insert([
+//            'startdate' => '16-01-2020',
+//            'enddate' => '17-01-2020',
+//            'isapproved' => False,
+//            'submitter' => 1,
+//        ]);
+
+        factory(Absence::class, 10)->create();
     }
 }
