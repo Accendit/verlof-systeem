@@ -33,7 +33,12 @@
                                 <td>{{ $absence->submitter()->name }}</td>
                                 <td>{{ $absence->startdate }}</td>
                                 <td>{{ $absence->enddate }} </td>
-                                <td>{{ $absence->isapproved? "Ja" : "Nee" }}</td>
+                                @isset ($absence->isapproved)
+                                    <td>{{ $absence->isapproved? "Ja" : "Nee" }}</td>
+                                @else
+                                    <td>Nog niet beoordeeld</td>
+                                @endisset
+                                
                                 
                                 
                                 <td>
@@ -44,9 +49,9 @@
                                                 <button class="btn btn-primary" type="submit">Goedkeuren</button>
                                             </form>
                                         @endif
-                                    @if (Auth::User()->id === $absence->submitter()->id && !$absence->isapproved)
-                                        <button class="btn btn-secondary">Bewerk</button>
-                                    @endif
+                                        @if (Auth::User()->id === $absence->submitter()->id && !$absence->isapproved)
+                                            <button class="btn btn-secondary">Bewerk</button>
+                                        @endif
                                     </div>
                                 </td>
                                 

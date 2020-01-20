@@ -63,9 +63,9 @@ class AbsenceController extends Controller
         $absence->enddate = $enddate;
         $absence->isapproved = false;
         $absence->save();
-        return $this->index()->with([
-            'success_alert' => 'Nieuw verlof verzoek ' . $absence->id . ' aangemaakt.'
-        ]);
+        return redirect()->route("absences.index")->with(
+            'success_alert', 'Nieuw verlof verzoek ' . $absence->id . ' aangemaakt.'
+        );
     }
 
     /**
@@ -113,21 +113,25 @@ class AbsenceController extends Controller
         //
     }
 
+
+    /**
+     * Approve an Absence request
+     *
+     * @param \App\Absence  $absence
+     * @return \Illuminate\Http\RedirectResponse
+     */
     public function approve(Absence $absence)
     {
         if (!Auth::user()->isManager())
         {
-            return $this->index()->with([
-                'success_alert' => 'nee nee.'
+            return back()->with([
+                'danger_alert' => 'Je bent niet ingelogd als manager!.'
             ]);
         }
 
-        $absence->isapproved = true;
-        $absence->save();
-        // return $this->index()->with([
-        //     'success_alert' => 'Verzoek ' . $absence->id . ' goedgekeurd.'
-        // ]);
-        return Redirect::back()->with(
+        $absence->approve();
+
+        return back()->with(
             'success_alert', 'Verzoek ' . $absence->id . ' goedgekeurd.'
         );
     }

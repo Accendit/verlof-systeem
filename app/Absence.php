@@ -9,7 +9,8 @@ class Absence extends Model
     //
     public function approve()
     {
-        $this->isgoedgekeurd = true;
+        $this->isapproved = true;
+        $this->save();
     }
 
     public function submitter()
