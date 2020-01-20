@@ -59,7 +59,7 @@
                             @endforeach
                         </tbody>
                     </table>
-                    {{ $absences->links() }}
+                    {{-- {{ $absences->links() }} --}}
                 </div>
             </div>
         </div>
