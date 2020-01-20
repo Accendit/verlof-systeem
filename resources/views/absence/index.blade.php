@@ -39,9 +39,12 @@
                                 <td>
                                     <div class="btn-group" role="group">
                                         @if (Auth::User()->isManager() && !$absence->isapproved)
-                                        <button class="btn btn-primary" type="submit">Goedgekeuren</button>
-                                    @endif
-                                    @if (Auth::User()->id === $absence->submitter()->id)
+                                            <form action="/absences/{{ $absence->id }}/approve" method="post">
+                                                <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
+                                                <button class="btn btn-primary" type="submit">Goedkeuren</button>
+                                            </form>
+                                        @endif
+                                    @if (Auth::User()->id === $absence->submitter()->id && !$absence->isapproved)
                                         <button class="btn btn-secondary">Bewerk</button>
                                     @endif
                                     </div>
