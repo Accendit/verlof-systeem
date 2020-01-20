@@ -20,14 +20,14 @@ class AbsenceController extends Controller
     public function index()
     {
         //
-        if (Auth::User()->isManager())
-        {
-            $absences = Absence::paginate(15);
-        } 
-        else
-        {
-            $absences = Absence::Where('submitter', Auth::User()->id)->paginate(15);
-        }
+        $user = Auth::user();
+        $absences = [];
+
+        foreach (Absence::All() as $absence) {
+            if ($user->can('view', $absence)) {
+                array_push($absences, $absence);
+            }
+        };
 
         return view('absence.index', ['absences' => $absences]);
     }
@@ -53,18 +53,27 @@ class AbsenceController extends Controller
     public function store(Request $request)
     {
         //
-        $startdate = $request['startdate'];
-        $enddate = $request['enddate'];
-        $userid = Auth::User()->id;
-        $absence = new Absence();
-        $absence->submitter = $userid;
-        $absence->startdate = $startdate;
-        $absence->enddate = $enddate;
-        $absence->isapproved = false;
-        $absence->save();
-        return redirect()->route("absences.index")->with(
-            'success_alert', 'Nieuw verlof verzoek ' . $absence->id . ' aangemaakt.'
-        );
+        $user = $request->User();
+
+        if ($user->can('create', Absence::class)) {
+
+            Absence::create([
+                'submitter' => $user->id,
+                'startdate' => $request['startdate'],
+                'enddate' => $request['enddate'],
+            ]);
+
+            return redirect()->route('absences.index')->with([
+                'success_alert', 'Nieuw verlof verzoek ' . Absence::latest()->first()->id . ' aangemaakt.'
+            ]);
+
+        } else {
+
+            return redirect()->route('absences.index')->with([
+                'danger_alert', 'Je bent niet gemachtigd om een verzoek in te dienen.'
+            ]);
+
+        }
     }
 
     /**
