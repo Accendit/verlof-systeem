@@ -44,9 +44,9 @@
                                                 <button class="btn btn-primary" type="submit">Goedkeuren</button>
                                             </form>
                                         @endif
-                                    @if (Auth::User()->id === $absence->submitter()->id && !$absence->isapproved)
-                                        <button class="btn btn-secondary">Bewerk</button>
-                                    @endif
+                                        @if (Auth::User()->id === $absence->submitter()->id && !$absence->isapproved)
+                                            <button class="btn btn-secondary">Bewerk</button>
+                                        @endif
                                     </div>
                                 </td>
                                 
