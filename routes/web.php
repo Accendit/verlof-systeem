@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return redirect()->route('absences');
+    return redirect('/absences');
 });
 
 Auth::routes(['register' => false]);
@@ -20,3 +20,5 @@ Auth::routes(['register' => false]);
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('absences', 'AbsenceController');
+
+Route::post('/absences/{absence}/approve', 'AbsenceController@approve');
