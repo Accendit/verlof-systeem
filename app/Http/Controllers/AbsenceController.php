@@ -53,8 +53,18 @@ class AbsenceController extends Controller
     public function store(Request $request)
     {
         //
-        return("Enne");
-        // log::debug("store");
+        $startdate = $request['startdate'];
+        $enddate = $request['enddate'];
+        $userid = Auth::User()->id;
+        $absence = new Absence();
+        $absence->submitter = $userid;
+        $absence->startdate = $startdate;
+        $absence->enddate = $enddate;
+        $absence->isapproved = false;
+        $absence->save();
+        return $this->index()->with([
+            'success_alert' => 'Nieuw verlof verzoek ' . $absence->id . ' aangemaakt.'
+        ]);
     }
 
     /**
@@ -104,7 +114,20 @@ class AbsenceController extends Controller
 
     public function approve(Absence $absence)
     {
-        $absence->isgoedgekeurd = true;
+        if (!Auth::user()->isManager()) 
+        {
+            return $this->index()->with([
+                'success_alert' => 'nee nee.'
+            ]);
+        }
+
+        $absence->isapproved = true;
         $absence->save();
+        // return $this->index()->with([
+        //     'success_alert' => 'Verzoek ' . $absence->id . ' goedgekeurd.'
+        // ]);
+        return back()->with(
+            'success_alert', 'Verzoek ' . $absence->id . ' goedgekeurd.'
+        );
     }
 }
