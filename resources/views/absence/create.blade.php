@@ -11,13 +11,14 @@
                 <div class="card-body">
 
                     <form action="/absences" method="post">
+                        <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
                         <div class="form-group">
                             <label for="startdate">Start Datum:</label>
-                            <input type="text" class="form-control" id="startdate" placeholder="Start datum">
+                            <input name="startdate" type="text" class="form-control" id="startdate" placeholder="Start datum">
                         </div>
                         <div class="form-group">
                             <label for="enddate">Eind Datum:</label>
-                            <input type="text" class="form-control" id="enddate" placeholder="Eind datum">
+                            <input name="enddate" type="text" class="form-control" id="enddate" placeholder="Eind datum">
                         </div>
                         <button type="submit" class="btn btn-primary">Indienen</button>
                     </form>
