@@ -62,9 +62,9 @@ class AbsenceController extends Controller
         $absence->enddate = $enddate;
         $absence->isapproved = false;
         $absence->save();
-        return $this->index()->with([
-            'success_alert' => 'Nieuw verlof verzoek ' . $absence->id . ' aangemaakt.'
-        ]);
+        return redirect()->route("absences.index")->with(
+            'success_alert', 'Nieuw verlof verzoek ' . $absence->id . ' aangemaakt.'
+        );
     }
 
     /**
