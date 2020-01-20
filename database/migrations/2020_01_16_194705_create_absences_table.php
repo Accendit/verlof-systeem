@@ -17,6 +17,7 @@ class CreateAbsencesTable extends Migration
             $table->bigIncrements('id');
             $table->date('startdate');
             $table->date('enddate');
+            $table->boolean('isapproved')->nullable()->default(null);
             $table->boolean('isapproved')->nullable();
             $table->bigInteger('submitter');
             $table->timestamps();
