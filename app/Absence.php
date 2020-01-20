@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class Absence extends Model
 {
     //
+    protected $fillable = [
+        'isapproved', 'startdate', 'enddate', 'submitter'
+    ];
+
     public function approve()
     {
         $this->isapproved = true;
