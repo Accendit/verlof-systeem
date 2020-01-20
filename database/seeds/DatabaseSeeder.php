@@ -12,12 +12,19 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // $this->call(UsersTableSeeder::class);
+        Artisan::call('adldap:import', [
+            '--no-interaction' => true,
+            '--restore' => true,
+            '--delete' => true,
+            '--filter' => '(objectclass=user)'
+        ]);
+
         DB::table("absences")->insert([
             'startdate' => '16-01-2020',
             'enddate' => '17-01-2020',
-            'isapproved' => False,
+            'isapproved' => Null,
             'submitter' => 1,
         ]);
+
     }
 }
