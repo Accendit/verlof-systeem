@@ -33,7 +33,12 @@
                                 <td>{{ $absence->submitter()->name }}</td>
                                 <td>{{ $absence->startdate }}</td>
                                 <td>{{ $absence->enddate }} </td>
-                                <td>{{ $absence->isapproved? "Ja" : "Nee" }}</td>
+                                @isset ($absence->isapproved)
+                                    <td>{{ $absence->isapproved? "Ja" : "Nee" }}</td>
+                                @else
+                                    <td>Nog niet beoordeeld</td>
+                                @endisset
+                                
                                 
                                 
                                 <td>
