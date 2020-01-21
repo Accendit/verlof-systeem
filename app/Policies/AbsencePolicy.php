@@ -57,7 +57,7 @@ class AbsencePolicy
     public function update(User $user, Absence $absence)
     {
         //
-        return ($absence->submitter == $user->id);
+        return ($absence->submitter == $user->id and $absence->isapproved === null);
     }
 
     /**
@@ -97,5 +97,17 @@ class AbsencePolicy
     {
         //
         return $user->isManager();
+    }
+
+    /**
+     * Determine whether the user can approve the absence.
+     * 
+     * @param \App\User $user
+     * 
+     * @return boolean
+     */
+    public function approve(User $user, Absence $absence)
+    {
+        return $user->isManager() and !$absence->isapproved;
     }
 }
