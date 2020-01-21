@@ -4,7 +4,7 @@
 
 <div class="container">
     <div class="row justify-content-center">
-        <h2 class="display-3 text-light m-5">Verlof aanvragen</h2>
+        <h2 class="display-3 text-dark m-5">Verlof aanvragen</h2>
         <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
