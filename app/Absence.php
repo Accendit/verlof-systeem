@@ -11,9 +11,25 @@ class Absence extends Model
         'isapproved', 'startdate', 'enddate', 'submitter'
     ];
 
+    /**
+     * This function will approve a user's Absence request.
+     * 
+     * @return void
+     */
     public function approve()
     {
         $this->isapproved = true;
+        $this->save();
+    }
+
+    /**
+     * This function will disapprove a user's Absence request.
+     * 
+     * @return void
+     */
+    public function disapprove()
+    {
+        $this->isapproved = false;
         $this->save();
     }
 

@@ -21,4 +21,6 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('absences', 'AbsenceController');
 
-Route::post('/absences/{absence}/approve', 'AbsenceController@approve');
+Route::post('/absences/{absence}/approve', 'AbsenceController@approve')->name('absences.approve');
+
+Route::post('/absences/{absence}/disapprove', 'AbsenceController@disapprove')->name('absences.disapprove');

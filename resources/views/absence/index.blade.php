@@ -49,9 +49,16 @@
                                                         <button class="btn btn-primary" type="submit">Goedkeuren</button>
                                                     </form>
                                                 @endcan
+                                                @can('disapprove', $absence)
+                                                <form action="{{ route('absences.disapprove', $absence) }}" method="post">
+                                                    <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
+                                                    <button class="btn btn-danger" type="submit">Afkeuren</button>
+                                                </form>
+                                                @endcan
                                                 @can('update', $absence)
                                                     <a class="btn btn-secondary" href="/absences/{{ $absence->id }}/edit">Bewerk</a>
                                                 @endcan
+                                                
                                             </div>
                                         </td>
                                         

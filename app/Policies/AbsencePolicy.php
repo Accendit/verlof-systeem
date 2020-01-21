@@ -108,6 +108,19 @@ class AbsencePolicy
      */
     public function approve(User $user, Absence $absence)
     {
-        return $user->isManager() and !$absence->isapproved;
+        return $user->isManager() and !isset($absence->isapproved);
+    }
+
+    /**
+     * Determine whether the user can disapprove the absence.
+     * 
+     * @param \App\User $user
+     * @param \App\Absence $absence
+     * 
+     * @return void
+     */
+    public function disapprove(User $user, Absence $absence)
+    {
+        return $user->isManager() and !isset($absence->isapproved);
     }
 }

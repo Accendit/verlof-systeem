@@ -157,4 +157,33 @@ class AbsenceController extends Controller
             
         };
     }
+
+    /**
+     * Disapprove an Absence request.
+     * 
+     * @param Absence $absence
+     * @param Request $request
+     * 
+     * @return void
+     */
+    public function disapprove(Absence $absence, Request $request)
+    {
+        $user = $request->User();
+
+
+        if ($user->can('disapprove', $absence)) {
+
+            $absence->disapprove();
+            return back()->with([
+                'success_alert' => 'Verzoek ' . $absence->id . ' afgekeurd.'
+            ]);
+
+        } else {
+
+            return back()->with([
+                'danger_alert' => 'U bent niet gemachtigd. '
+            ]);
+
+        }
+    }
 }
