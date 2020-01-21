@@ -4,19 +4,20 @@
 
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-lg-10">
+        <h2 class="display-3 text-light m-5">Verlof aanvragen</h2>
+        <div class="col-lg-12">
             <div class="card">
                 <div class="card-header">
-                    <div class="col">
-                        <h3>Verlof aanvragen</h3>
-                        <a class="btn btn-sm btn-primary" href="/absences/create">Nieuw verzoek</a>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-md-auto ml-auto"><a class="btn btn-lg btn-primary" href="{{ route('absences.create') }}">Nieuw verzoek</a></div>
+                        </div>                        
                     </div>
-                    
                 </div>
-                <div class="card-body">
-                    <table class="table table-hover table-responsive-xl">
+                <div class="card-body p-0">
+                    <table class="table table-hover table-responsive-xl table-striped">
                         <caption>Tabel met verlof aanvragen</caption>
-                        <thead>
+                        <thead class="thead-dark">
                             <tr>
                                 <th scope="col">#</th>
                                 <th scope="col">Aanvrager</th>
@@ -42,21 +43,27 @@
                                         
                                         
                                         <td>
-                                            <div class="btn-group" role="group">
+                                            <div class="btn-group btn-group-sm" role="group">
                                                 @can('approve', $absence)
-                                                    <form action="/absences/{{ $absence->id }}/approve" method="post">
-                                                        <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
-                                                        <button class="btn btn-primary" type="submit">Goedkeuren</button>
-                                                    </form>
+                                                <form class="btn-group btn-group-sm" action="{{ route('absences.approve', $absence) }}" method="post">
+                                                    <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
+                                                    <button class="btn btn-primary" type="submit">
+                                                        <i class="material-icons">check</i>
+                                                    </button>
+                                                </form>
                                                 @endcan
                                                 @can('disapprove', $absence)
-                                                <form action="{{ route('absences.disapprove', $absence) }}" method="post">
+                                                <form class="btn-group btn-group-sm" action="{{ route('absences.disapprove', $absence) }}" method="post">
                                                     <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
-                                                    <button class="btn btn-danger" type="submit">Afkeuren</button>
+                                                    <button class="btn btn-danger" type="submit">
+                                                        <i class="material-icons">close</i>
+                                                    </button>
                                                 </form>
                                                 @endcan
                                                 @can('update', $absence)
-                                                    <a class="btn btn-secondary" href="/absences/{{ $absence->id }}/edit">Bewerk</a>
+                                                <a class="btn btn-secondary" href="{{ route('absences.edit', $absence) }}">
+                                                    <i class="material-icons">edit</i>
+                                                </a>
                                                 @endcan
                                                 
                                             </div>
