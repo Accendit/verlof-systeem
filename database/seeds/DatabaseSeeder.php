@@ -20,13 +20,6 @@ class DatabaseSeeder extends Seeder
             '--filter' => '(objectclass=user)'
         ]);
 
-//        DB::table("absences")->insert([
-//            'startdate' => '16-01-2020',
-//            'enddate' => '17-01-2020',
-//            'isapproved' => Null,
-//            'submitter' => 1,
-//        ]);
-
-        factory(Absence::class, 10)->create();
+        factory(Absence::class, 25)->create();
     }
 }
