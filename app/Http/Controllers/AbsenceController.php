@@ -115,7 +115,11 @@ class AbsenceController extends Controller
             $absence->save();
             return redirect()->route('absences.index')->with([
                 'succes_alert' => 'Verlof verzoek ' . $absence->id . ' succesvol gewijzigd.'
-            ]);;
+            ]);
+        } else {
+            return redirect()->route('absences.index')->with([
+                'danger_alert' => 'U kan verzoek ' . $absence->id . ' niet (meer) wijzigen.'
+            ]);
         }
     }
 
