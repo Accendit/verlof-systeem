@@ -13,6 +13,7 @@ class AbsenceController extends Controller
     {
         $this->middleware('auth');
     }
+
     /**
      * Display a listing of the resource.
      *
@@ -20,18 +21,13 @@ class AbsenceController extends Controller
      */
     public function index()
     {
-        //
+        $absences = Absence::all();
 
-        $user = Auth::user();
-        $absences = [];
+        $filtered = $absences->filter(function ($item) {
+            return Auth::User()->can('view', $item);
+        });
 
-        foreach (Absence::All() as $absence) {
-            if ($user->can('view', $absence)) {
-                array_push($absences, $absence);
-            }
-        };
-
-        return view('absence.index', ['absences' => $absences]);
+        return view('absence.index', ['absences' => $filtered]);
     }
 
     /**
@@ -42,7 +38,7 @@ class AbsenceController extends Controller
     public function create()
     {
         //
-        return view('absence.create');
+        return view('absence.single');
 
     }
 
@@ -59,20 +55,20 @@ class AbsenceController extends Controller
 
         if ($user->can('create', Absence::class)) {
 
-            Absence::create([
+            $absence = Absence::create([
                 'submitter' => $user->id,
                 'startdate' => $request['startdate'],
                 'enddate' => $request['enddate'],
             ]);
 
             return redirect()->route('absences.index')->with([
-                'success_alert', 'Nieuw verlof verzoek ' . Absence::latest()->first()->id . ' aangemaakt.'
+                'success_alert' => 'Nieuw verlof verzoek ' . $absence->id . ' aangemaakt.'
             ]);
 
         } else {
 
             return redirect()->route('absences.index')->with([
-                'danger_alert', 'Je bent niet gemachtigd om een verzoek in te dienen.'
+                'danger_alert' => 'Je bent niet gemachtigd om een verzoek in te dienen.'
             ]);
 
         }
@@ -98,6 +94,7 @@ class AbsenceController extends Controller
     public function edit(Absence $absence)
     {
         //
+        return view('absence.single', ['absence' => $absence]);
     }
 
     /**
@@ -110,6 +107,16 @@ class AbsenceController extends Controller
     public function update(Request $request, Absence $absence)
     {
         //
+        $user = $request->User();
+
+        if ($user->can('update', $absence)) {
+            $absence->startdate = $request['startdate'];
+            $absence->enddate = $request['enddate'];
+            $absence->save();
+            return redirect()->route('absences.index')->with([
+                'succes_alert' => 'Verlof verzoek ' . $absence->id . ' succesvol gewijzigd.'
+            ]);;
+        }
     }
 
     /**
@@ -125,24 +132,29 @@ class AbsenceController extends Controller
 
 
     /**
-     * Approve an Absence request
+     * Approve an Absence request.
      *
      * @param \App\Absence  $absence
+     * @param \illuminate\Http\Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function approve(Absence $absence)
+    public function approve(Absence $absence, Request $request)
     {
-        if (!Auth::user()->isManager())
-        {
+        $user = $request->User();
+
+        if ($user->can('approve', $absence)) {
+
+            $absence->approve();
             return back()->with([
-                'danger_alert' => 'Je bent niet ingelogd als manager!.'
+                'success_alert' => 'Verzoek ' . $absence->id . ' goedgekeurd.'
             ]);
-        }
 
-        $absence->approve();
+        } else {
 
-        return back()->with(
-            'success_alert', 'Verzoek ' . $absence->id . ' goedgekeurd.'
-        );
+            return back()->with([
+                'danger_alert' => 'U bent niet gemachtigd. '
+            ]);
+            
+        };
     }
 }
