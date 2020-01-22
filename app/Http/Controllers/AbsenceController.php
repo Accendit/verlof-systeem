@@ -42,7 +42,6 @@ class AbsenceController extends Controller
      */
     public function create()
     {
-        //
         return view('absence.single');
 
     }
@@ -55,7 +54,6 @@ class AbsenceController extends Controller
      */
     public function store(Request $request)
     {
-        //
         $user = $request->User();
 
         if (!$user->can('create', Absence::class)) {
@@ -106,7 +104,6 @@ class AbsenceController extends Controller
      */
     public function edit(Absence $absence)
     {
-        //
         return view('absence.single', ['absence' => $absence]);
     }
 
