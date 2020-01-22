@@ -293,6 +293,8 @@ return [
 
         'name' => 'cn',
 
+        'mail' => 'mail',
+
     ],
 
     /*
