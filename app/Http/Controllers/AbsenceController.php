@@ -6,6 +6,11 @@ use App\Absence;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\NewAbsenceMail;
+use App\Mail\ChangedAbsenceMail;
+use App\User;
+use Adldap\Laravel\Facades\Adldap;
 
 class AbsenceController extends Controller
 {
@@ -53,25 +58,33 @@ class AbsenceController extends Controller
         //
         $user = $request->User();
 
-        if ($user->can('create', Absence::class)) {
-
-            $absence = Absence::create([
-                'submitter' => $user->id,
-                'startdate' => $request['startdate'],
-                'enddate' => $request['enddate'],
-            ]);
-
-            return redirect()->route('absences.index')->with([
-                'success_alert' => 'Nieuw verlof verzoek ' . $absence->id . ' aangemaakt.'
-            ]);
-
-        } else {
-
+        if (!$user->can('create', Absence::class)) {
             return redirect()->route('absences.index')->with([
                 'danger_alert' => 'Je bent niet gemachtigd om een verzoek in te dienen.'
             ]);
-
         }
+
+        $absence = Absence::create([
+            'submitter' => $user->id,
+            'startdate' => $request['startdate'],
+            'enddate' => $request['enddate'],
+        ]);
+
+        
+        $ldap = Adldap::getFacadeRoot();
+        $members = $ldap->search()->where('samaccountname', '=', env('LDAP_MANAGEMENT_GROUP'))->first()->member;
+
+        foreach ($members as $member) {
+            $mail = $ldap->search()->findByDn($member)->mail;
+            Mail::to($mail)
+                ->send(new NewAbsenceMail($absence));
+        }
+        
+
+        return redirect()->route('absences.index')->with([
+            'success_alert' => 'Nieuw verlof verzoek ' . $absence->id . ' aangemaakt.'
+        ]);
+
     }
 
     /**
@@ -106,21 +119,23 @@ class AbsenceController extends Controller
      */
     public function update(Request $request, Absence $absence)
     {
-        //
         $user = $request->User();
 
-        if ($user->can('update', $absence)) {
-            $absence->startdate = $request['startdate'];
-            $absence->enddate = $request['enddate'];
-            $absence->save();
-            return redirect()->route('absences.index')->with([
-                'succes_alert' => 'Verlof verzoek ' . $absence->id . ' succesvol gewijzigd.'
-            ]);
-        } else {
+        if (!$user->can('update', $absence)) {
             return redirect()->route('absences.index')->with([
                 'danger_alert' => 'U kan verzoek ' . $absence->id . ' niet (meer) wijzigen.'
             ]);
         }
+            
+
+        $absence->startdate = $request['startdate'];
+        $absence->enddate = $request['enddate'];
+        $absence->save();
+
+        return redirect()->route('absences.index')->with([
+            'succes_alert' => 'Verlof verzoek ' . $absence->id . ' succesvol gewijzigd.'
+        ]);
+
     }
 
     /**
@@ -146,20 +161,22 @@ class AbsenceController extends Controller
     {
         $user = $request->User();
 
-        if ($user->can('approve', $absence)) {
-
-            $absence->approve();
-            return back()->with([
-                'success_alert' => 'Verzoek ' . $absence->id . ' goedgekeurd.'
-            ]);
-
-        } else {
-
+        if (!$user->can('approve', $absence)) {
             return back()->with([
                 'danger_alert' => 'U bent niet gemachtigd. '
             ]);
-            
-        };
+        }
+
+        $absence->approve();
+        $submitter = User::findOrFail($absence->submitter);
+
+        Mail::to($submitter->mail)
+            ->send(new ChangedAbsenceMail($absence));
+
+        return back()->with([
+            'success_alert' => 'Verzoek ' . $absence->id . ' goedgekeurd.'
+        ]);
+
     }
 
     /**
@@ -174,20 +191,23 @@ class AbsenceController extends Controller
     {
         $user = $request->User();
 
-
-        if ($user->can('disapprove', $absence)) {
-
-            $absence->disapprove();
-            return back()->with([
-                'success_alert' => 'Verzoek ' . $absence->id . ' afgekeurd.'
-            ]);
-
-        } else {
+        if (!$user->can('disapprove', $absence)) {
 
             return back()->with([
                 'danger_alert' => 'U bent niet gemachtigd. '
             ]);
 
         }
+
+        $absence->disapprove();
+        $submitter = User::findOrFail($absence->submitter);
+
+        Mail::to($submitter->mail)
+            ->send(new ChangedAbsenceMail($absence));
+        
+        return back()->with([
+            'success_alert' => 'Verzoek ' . $absence->id . ' afgekeurd.'
+        ]);
+
     }
 }
