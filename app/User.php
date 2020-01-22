@@ -45,6 +45,6 @@ class User extends Authenticatable
      */
     public function isManager()
     {
-        return $this->ldap->inGroup("Management");
+        return $this->ldap->inGroup(env('LDAP_MANAGEMENT_GROUP'));
     }
 }
