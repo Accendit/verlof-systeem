@@ -15,8 +15,8 @@ class CreateAbsencesTable extends Migration
     {
         Schema::create('absences', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->date('startdate');
-            $table->date('enddate');
+            $table->string('startdate');
+            $table->string('enddate');
             $table->boolean('isapproved')->nullable()->default(null);
             $table->bigInteger('submitter', false, true);
             $table->timestamps();
