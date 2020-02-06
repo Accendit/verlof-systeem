@@ -1,4 +1,10 @@
 # Verlof-Systeem
+![Screenshot](/screeshot.png?raw=true "Screenshot")
+
+## Features
+* Authorisation using LDAP.
+* Approve and disapprove absence requests.
+* E-mail notifications.
 
 ## Installation
 1. Run `composer install` to install php dependencies.
