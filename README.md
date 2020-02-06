@@ -1,5 +1,5 @@
 # Verlof-Systeem
-![Screenshot](/screeshot.png?raw=true "Screenshot")
+![Screenshot](/screenshot.png?raw=true "Screenshot")
 
 ## Features
 * Authorisation using LDAP.
